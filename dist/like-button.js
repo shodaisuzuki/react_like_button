@@ -992,7 +992,9 @@ var LikeButton = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (LikeButton.__proto__ || Object.getPrototypeOf(LikeButton)).call(this, props));
 
     _this.state = {
-      hovered: false
+      hovered: false,
+      count: 999,
+      liked: false
     };
     return _this;
   }
@@ -1063,6 +1065,18 @@ var LikeButton = function (_React$Component) {
     value: function onMouseLeave() {
       this.setState({ hovered: false });
     }
+
+    // クリックした時のイベントハンドラ
+
+  }, {
+    key: "onClick",
+    value: function onClick() {
+      this.setState({
+        // state.likedがtrueだったら-1、falseだったら+1する
+        count: this.state.count + (this.state.liked ? -1 : 1),
+        liked: !this.state.liked
+      });
+    }
   }, {
     key: "render",
     value: function render() {
@@ -1077,10 +1091,11 @@ var LikeButton = function (_React$Component) {
         { style: styles.container },
         _react2.default.createElement(
           "span",
-          {
-            style: likeStyle,
+          { style: likeStyle,
             onMouseEnter: this.onMouseEnter.bind(this),
-            onMouseLeave: this.onMouseLeave.bind(this) },
+            onMouseLeave: this.onMouseLeave.bind(this),
+            onClick: this.onClick.bind(this) },
+          this.state.liked ? "✔ " : "",
           "\u3044\u3044\u306D!"
         ),
         _react2.default.createElement(
@@ -1091,7 +1106,7 @@ var LikeButton = function (_React$Component) {
             { style: styles.counterBefore },
             " "
           ),
-          "999"
+          this.state.count
         )
       );
     }
