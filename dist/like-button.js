@@ -963,6 +963,8 @@ module.exports = getActiveElement;
 "use strict";
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(6);
@@ -984,19 +986,113 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var LikeButton = function (_React$Component) {
   _inherits(LikeButton, _React$Component);
 
-  function LikeButton() {
+  function LikeButton(props) {
     _classCallCheck(this, LikeButton);
 
-    return _possibleConstructorReturn(this, (LikeButton.__proto__ || Object.getPrototypeOf(LikeButton)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (LikeButton.__proto__ || Object.getPrototypeOf(LikeButton)).call(this, props));
+
+    _this.state = {
+      hovered: false
+    };
+    return _this;
   }
 
   _createClass(LikeButton, [{
+    key: "styles",
+    value: function styles() {
+      return {
+        container: {
+          fontFamily: "helvetica, arial, 'hiragino kaku gothic pro', meiryo, 'ms pgothic', sans-serif",
+          fontSize: 11
+        },
+        like: {
+          display: "inline-block",
+          background: "#3b5998",
+          padding: "0px 5px",
+          borderRadius: 2,
+          color: "#ffffff",
+          cursor: "pointer",
+          float: "left",
+          height: 20,
+          lineHeight: "20px"
+        },
+        likeHover: {
+          background: "#444"
+        },
+        counterBefore: {
+          display: "block",
+          float: "left",
+          width: 6,
+          height: 6,
+          background: "#fafafa",
+          marginLeft: "-12px",
+          borderRight: 10,
+          transform: "rotate(45deg)",
+          WebkitTransform: "rotate(45deg)",
+          marginTop: 6,
+          borderLeft: "1px solid #aaa",
+          borderBottom: "1px solid #aaa"
+        },
+        counter: {
+          display: "block",
+          background: "#fafafa",
+          boxSizing: "border-box",
+          border: "1px solid #aaa",
+          float: "left",
+          padding: "0px 8px",
+          borderRadius: 2,
+          marginLeft: 8,
+          height: 20,
+          lineHeight: "20px"
+        }
+      };
+    }
+
+    // カーソルが乗った時に状態を変更するイベントハンドラ
+
+  }, {
+    key: "onMouseEnter",
+    value: function onMouseEnter() {
+      this.setState({ hovered: true });
+    }
+
+    // カーソルが外れた時に状態を変更するイベントハンドラ
+
+  }, {
+    key: "onMouseLeave",
+    value: function onMouseLeave() {
+      this.setState({ hovered: false });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var styles = this.styles();
+
+      // ボタンの上にカーソルがある場合like,likeHoverを、ない場合likeを代入
+      // {...styles.like, ...styles.likeHover}はES7でふたつのオブジェクトをマージする構文
+      var likeStyle = this.state.hovered ? _extends({}, styles.like, styles.likeHover) : styles.like;
+
       return _react2.default.createElement(
         "span",
-        null,
-        "\u3044\u3044\u306D\u30DC\u30BF\u30F3\u4E88\u5B9A\u5730"
+        { style: styles.container },
+        _react2.default.createElement(
+          "span",
+          {
+            style: likeStyle,
+            onMouseEnter: this.onMouseEnter.bind(this),
+            onMouseLeave: this.onMouseLeave.bind(this) },
+          "\u3044\u3044\u306D!"
+        ),
+        _react2.default.createElement(
+          "span",
+          { style: styles.counter },
+          _react2.default.createElement(
+            "span",
+            { style: styles.counterBefore },
+            " "
+          ),
+          "999"
+        )
       );
     }
   }]);

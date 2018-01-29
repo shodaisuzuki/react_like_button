@@ -70,12 +70,15 @@ class LikeButton extends React.Component {
 
   render() {
     const styles = this.styles();
-    console.log(this.state);
+    
+    // ボタンの上にカーソルがある場合like,likeHoverを、ない場合likeを代入
+    // {...styles.like, ...styles.likeHover}はES7でふたつのオブジェクトをマージする構文
+    const likeStyle = this.state.hovered ? {...styles.like, ...styles.likeHover} : styles.like;
 
     return (
       <span style={styles.container}>
         <span
-          style={styles.like}
+          style={likeStyle}
           onMouseEnter={::this.onMouseEnter}
           onMouseLeave={::this.onMouseLeave}>いいね!
         </span>
